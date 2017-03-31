@@ -1,5 +1,6 @@
 /doc/
 /lib/
-/bin/
+/bin/*
+!/bin/deploy
 /.shards/
 ebtest-*.zip

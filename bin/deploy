@@ -1,0 +1,4 @@
+#!/bin/sh
+docker build -t ebtest-build -f docker/BuildDockerfile .
+docker run -v $(pwd)/build:/app/build ebtest-build
+zip -Xrj "ebtest-$(date +%s).zip" build/ docker/Dockerfile docker/Dockerrun.aws.json
