@@ -1,0 +1,27 @@
+FROM phusion/baseimage
+MAINTAINER Nick Franken <shnick@gmail.com>
+
+RUN apt-get -q update && \
+  apt-get -qy install build-essential libssl-dev git wget postgresql-client libxml2-dev && \
+  apt-key adv --keyserver hkp://79.97.186.123:80 --recv-keys 09617FD37CC06B54 && \
+  echo "deb https://dist.crystal-lang.org/apt crystal main" | tee /etc/apt/sources.list.d/crystal.list && \
+  apt-get update && \
+  apt-get install crystal && \
+  apt-get -y autoremove && \
+  apt-get -y clean && \
+  rm -rf /var/lib/apt/lists/* && \
+  rm -rf /tmp/*
+
+ADD ./src /app/src
+ADD ./shard.yml /app/shard.yml
+ADD ./shard.lock /app/shard.lock
+ADD ./docker/docker_run_build.sh /app/docker_run_build.sh
+WORKDIR /app
+
+RUN shards update && \
+  sed -i -- 's/config.server.listen/config.server.listen(true)/' lib/kemal/src/kemal.cr && \
+  crystal build --release src/EBTest.cr
+
+RUN chmod +x docker_run_build.sh
+
+CMD ["./docker_run_build.sh"]

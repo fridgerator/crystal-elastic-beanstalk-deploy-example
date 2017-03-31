@@ -1,0 +1,18 @@
+name: EBTest
+version: 0.1.0
+
+authors:
+  - Nick Franken <shnick@gmail.com>
+
+targets:
+  EBTest:
+    main: src/EBTest.cr
+
+dependencies:
+  kemal:
+    github: kemalcr/kemal
+    version: 0.18.3
+
+crystal: 0.21.1
+
+license: MIT
